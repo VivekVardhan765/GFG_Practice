@@ -6,28 +6,22 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    // Function to detect cycle in an undirected graph.
+    bool dfs(int parent,int node,vector<vector<int>>& adj,vector<bool>& v){
+        v[node]=true;
+        for(int el:adj[node]){
+            if(el!=parent){
+                if(v[el])return true;
+                if(dfs(node,el,adj,v))return true;
+            }
+        }
+        return false;
+    }
     bool isCycle(vector<vector<int>>& adj) {
         int n=adj.size();
         vector<bool>v(n,false);
-        queue<pair<int,int>>q;
         for(int i=0;i<n;i++){
             if(!v[i]){
-                q.push({i,-1});
-                v[i]=true;
-                while(!q.empty()){
-                    int curr=q.front().first;
-                    int parent=q.front().second;
-                    q.pop();
-                    for(int el:adj[curr]){
-                        if (!v[el]) {  
-                            q.push({el, curr});
-                            v[el] = true;
-                        } else if (el != parent) {
-                            return true;
-                        }
-                    }
-                }
+                if(dfs(-1,i,adj,v))return true;
             }
         }
         return false;
