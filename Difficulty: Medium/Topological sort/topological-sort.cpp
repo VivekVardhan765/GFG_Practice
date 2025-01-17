@@ -6,7 +6,7 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    void dfs(int node,vector<vector<int>>& adj,vector<bool>& vis,stack<int>& st){
+    void dfs(int node,vector<vector<int>>& adj,vector<bool>& vis, stack<int>& st){
         vis[node]=true;
         for(int el:adj[node]){
             if(!vis[el]){
@@ -14,6 +14,7 @@ class Solution {
             }
         }
         st.push(node);
+        return;
     }
     vector<int> topologicalSort(vector<vector<int>>& adj) {
         int n=adj.size();
@@ -24,12 +25,11 @@ class Solution {
                 dfs(i,adj,vis,st);
             }
         }
-        vector<int> ans;
-        while (!st.empty()) {
+        vector<int>ans;
+        while(!st.empty()){
             ans.push_back(st.top());
             st.pop();
         }
-    
         return ans;
         
     }
