@@ -85,7 +85,6 @@ class Solution {
   public:
     // Function to remove a loop in the linked list.
     void removeLoop(Node* head) {
-        // code here
         Node* s=head;
         Node* f=head;
         while(s and f and f->next){
