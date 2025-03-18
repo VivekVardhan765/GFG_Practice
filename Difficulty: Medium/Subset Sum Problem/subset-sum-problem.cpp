@@ -8,24 +8,18 @@ using namespace std;
 
 class Solution {
   public:
+    bool f(int ind,int tar,vector<int>& arr,vector<vector<int>>& dp){
+        if(ind>=arr.size() or tar<0)return false;
+        if(tar==0 or tar==arr[ind])return true;
+        if(dp[ind][tar]!=-1)return dp[ind][tar];
+        bool pick=f(ind+1,tar-arr[ind],arr,dp);
+        bool npick=f(ind+1,tar,arr,dp);
+        return dp[ind][tar] = (pick or npick);
+    }
     bool isSubsetSum(vector<int>& arr, int sum) {
-        // code here
         int n=arr.size();
-        vector<vector<bool>>dp(n,vector<bool>(sum+1,false));
-        for(int i=0;i<n;i++)dp[i][0]=true;
-        dp[0][arr[0]]=true;
-        for(int i=1;i<n;i++){
-            for(int j=1;j<=sum;j++){
-                bool nottake;
-                nottake=dp[i-1][j];
-               bool take=false;
-               if(j>=arr[i]){
-                   take=dp[i-1][j-arr[i]];
-               }
-               dp[i][j]= take or nottake;
-            }
-        }
-        return dp[n-1][sum];
+        vector<vector<int>>dp(n+1,vector<int>(sum+1,-1));
+        return f(0,sum,arr,dp);
     }
 };
 
