@@ -4,52 +4,57 @@ using namespace std;
 
 
 // } Driver Code Ends
+
 class Solution {
   public:
-    // Function to return a list containing the DFS traversal of the graph.
-    void dfs(int node,vector<vector<int>>& adj,vector<bool>& v,vector<int>& ans){
+    void f(int node,vector<bool>&vis,vector<vector<int>>&adj,vector<int>& ans){
         ans.push_back(node);
-        v[node]=true;
+        vis[node]=1;
         for(int el:adj[node]){
-            if(!v[el])dfs(el,adj,v,ans);
+            if(!vis[el])f(el,vis,adj,ans);
         }
-        
+        return;
     }
-    vector<int> dfsOfGraph(vector<vector<int>>& adj) {
+    vector<int> dfs(vector<vector<int>>& adj) {
         int n=adj.size();
-        vector<bool>v(n,false);
         vector<int>ans;
+        vector<bool>vis(n);
         for(int i=0;i<n;i++){
-            if(!v[i]){
-                dfs(i,adj,v,ans);
-            }
+            if(!vis[i])f(i,vis,adj,ans);
         }
         return ans;
         
     }
 };
 
+
 //{ Driver Code Starts.
 
 int main() {
     int tc;
     cin >> tc;
+    cin.ignore();
     while (tc--) {
-        int V, E;
-        cin >> V >> E;
-
+        int V;
+        cin >> V;
+        cin.ignore();
         vector<vector<int>> adj(
             V); // Use vector of vectors instead of array of vectors.
 
-        for (int i = 0; i < E; i++) {
-            int u, v;
-            cin >> u >> v;
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+        for (int i = 0; i < V; i++) {
+            string input;
+            getline(cin, input);
+            int num;
+            vector<int> node;
+            stringstream ss(input);
+            while (ss >> num) {
+                node.push_back(num);
+            }
+            adj[i] = node;
         }
 
         Solution obj;
-        vector<int> ans = obj.dfsOfGraph(adj);
+        vector<int> ans = obj.dfs(adj);
         for (int i = 0; i < ans.size(); i++) {
             cout << ans[i] << " ";
         }
