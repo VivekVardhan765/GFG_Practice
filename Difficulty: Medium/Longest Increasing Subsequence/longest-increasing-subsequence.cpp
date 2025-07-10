@@ -1,55 +1,17 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
-
 class Solution {
   public:
-    int lis(vector<int>& arr) {
-        // code here
-        int n=arr.size();
-        int maxi=0;
-        vector<int>dp(n,1);
-        for(int i=0;i<n;i++){
-            for(int j=0;j<i;j++){
-                if(arr[i]>arr[j]){
-                    dp[i]=max(dp[i],dp[j]+1);
-                }
-            }
-            maxi=max(maxi,dp[i]);
+    int f(int prev,int curr,vector<int>& arr,vector<vector<int>>& dp){
+        if(curr==arr.size())return 0;
+        if(dp[prev+1][curr]!=-1)return dp[prev+1][curr];
+        if(prev==-1 or arr[curr]>arr[prev]){
+            return dp[prev+1][curr]=max(1+f(curr,curr+1,arr,dp) , f(prev,curr+1,arr,dp));
         }
-        return maxi;
+        else return dp[prev+1][curr]=f(prev,curr+1,arr,dp);
+    }
+    int lis(vector<int>& arr) {
+        int n=arr.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        return f(-1,0,arr,dp);
+        
     }
 };
-
-
-//{ Driver Code Starts.
-
-int main() {
-    int t;
-    cin >> t;
-    cin.ignore(); // to ignore the newline after the integer input
-
-    while (t--) {
-        int n;
-        vector<int> arr;
-        string input;
-
-        // Input format: first number n followed by the array elements
-        getline(cin, input);
-        stringstream ss(input);
-        int num;
-        while (ss >> num)
-            arr.push_back(num);
-
-        Solution obj;
-        cout << obj.lis(arr) << endl;
-        cout << "~" << endl;
-    }
-
-    return 0;
-}
-
-// } Driver Code Ends
