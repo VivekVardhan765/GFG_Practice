@@ -3,34 +3,30 @@ class Solution {
     // Function to find the smallest window in the string s1 consisting
     // of all the characters of string s2.
     string smallestWindow(string &s, string &t) {
-        // Your code here
-        int m=t.size();
         int n=s.size();
+        int m=t.size();
         unordered_map<char,int>mpp;
-        for(auto el:t){
-            mpp[el]++;
-        }
+        for(char el:t)mpp[el]++;
+        int start=-1;
+        int len=INT_MAX;
+        int track=0;
         int l=0;
-        int lind=-1;
-        int len=1e9+7;
-        int c=0;
-        for(int i=0;i<n;i++){
-            mpp[s[i]]--;
-            if(mpp[s[i]]>=0)c++;
-            while(c==m){
-                if(i-l+1<len){
-                    len=i-l+1;
-                    lind=l;
+        int r=0;
+        while(r<n){
+            if(mpp[s[r]]>0)track++;
+            mpp[s[r]]--;
+            while(track==m){
+                if(r-l+1<len){
+                    len=r-l+1;
+                    start=l;
                 }
                 mpp[s[l]]++;
-                if(mpp[s[l]]>0){
-                    c--;
-                }
+                if(mpp[s[l]]>0)track--;
                 l++;
             }
+            r++;
         }
-        if(lind==-1)return "";
-        return s.substr(lind,len);
-        
+        if(start==-1)return "";
+        return s.substr(start,len);
     }
 };
